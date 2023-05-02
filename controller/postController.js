@@ -3,22 +3,33 @@ const queries = require('../quries/postQuries')
 
 const addPost = (req, res) =>{
     const {
-        user_id,
-        image_url,
+        userId,
+        imageUrl,
         caption,
         location,
-        comment_count
+        commentCount
     } = req.body;
 
-    pool.query(queries.insertPost,[user_id, image_url, caption, location, comment_count],(error, results) =>{
+    pool.query(queries.insertPost,[userId, imageUrl, caption, location, commentCount],(error, results) =>{
         if (error) throw error;
         res.status(201).send("Post Created Successfully!");
     }
     
     )
 }
+const getPosts = (req, res) =>{
+
+    pool.query(queries.getPosts, (error, results) =>{
+        if (error) throw error;
+        res.status(200).json(results.rows)
+    })
+
+    console.log('Getting posts')
+}
 
 
+
+// This route run to create a table
 const createPostTable = (req, res) =>{
     const tableExistsQuery = `
     SELECT EXISTS (
@@ -34,14 +45,15 @@ const createPostTable = (req, res) =>{
         console.log('Table already exists');
         return Promise.reject('Post table already exists');
       } else {
+        // Modyfy the the table property here
         const createTableQuery = `
           CREATE TABLE post (
             id SERIAL PRIMARY KEY,
-            user_id VARCHAR(255),
-            image_url VARCHAR(255),
+            userId VARCHAR(255),
+            imageUrl VARCHAR(255),
             caption VARCHAR(255),
             location VARCHAR(255),
-            comment_count VARCHAR(255)
+            commentCount VARCHAR(255)
           )
         `;
         return pool.query(createTableQuery);
@@ -61,5 +73,6 @@ const createPostTable = (req, res) =>{
 
 module.exports = {
     addPost,
-    createPostTable
+    createPostTable,
+    getPosts
 }

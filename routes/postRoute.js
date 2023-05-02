@@ -7,10 +7,11 @@ const router = Router();
 
 
 router.post("/",postController.addPost)
+router.get("/posts",postController.getPosts)
 
 // This route use to create a table
 
-router.post("/createtable",postController.createPostTable)
+router.post("/createposttable",postController.createPostTable)
 
 
 
