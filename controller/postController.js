@@ -53,7 +53,8 @@ const createPostTable = (req, res) =>{
             imageUrl VARCHAR(255),
             caption VARCHAR(255),
             location VARCHAR(255),
-            commentCount VARCHAR(255)
+            commentCount VARCHAR(255),
+            "user_id" BIGINT REFERENCES "user" (id)
           )
         `;
         return pool.query(createTableQuery);
